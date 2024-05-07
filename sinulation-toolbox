@@ -1,0 +1,91 @@
+clc;
+
+clear all;
+
+% Entrées des angles des articulations (en radians)
+
+t1 = deg2rad(input('Entrez teta 1 : '));
+
+t2 = deg2rad(input('Entrez teta 2 : '));
+
+t3 = deg2rad(input('Entrez teta 3 : '));
+
+ 
+
+% Paramètres du bras robotique
+
+L(1) = Revolute('d', 11, 'a', 0, 'alpha', pi/2, 'modified');  % Joint 1
+
+L(2) = Revolute('d', 0, 'a', 11, 'alpha', 0, 'modified');     % Joint 2
+
+L(3) = Revolute('d', 0, 'a', 16, 'alpha', 0, 'modified');     % Joint 3
+
+ 
+
+% Création du robot
+
+robot = SerialLink(L, 'name', 'Robot 3DOF');
+
+ 
+
+% Configuration des angles des articulations
+
+q = [t1, t2, t3];
+
+ 
+
+% Calcul du modèle géométrique direct
+
+T = robot.fkine(q);
+
+ 
+
+% Obtenez les coordonnées de l'extrémité du bras
+
+P = transl(T);
+
+x = P(1);
+
+y = P(2);
+
+z = P(3);
+
+ 
+
+% Affichez les coordonnées de l'extrémité du bras
+
+disp('Coordonnées de l''extrémité du bras :');
+
+disp(['x : ', num2str(x)]);
+
+disp(['y : ', num2str(y)]);
+
+disp(['z : ', num2str(z)]);
+
+ 
+
+% Tracé du robot dans la configuration donnée
+
+figure;
+
+robot.plot(q, 'workspace', [-30 30 -30 30 -5 30], 'floorlevel', -5);
+
+ 
+
+hold on;
+
+ 
+
+% Tracé des positions des joints
+
+scatter3([0, 0, 0], [0, 0, 0], [0, 0, 0], 'ro', 'filled', 'LineWidth', 2);
+
+ 
+
+% Tracé de l'extrémité du bras
+
+scatter3(x, y, z, 'ko', 'filled', 'LineWidth', 2);
+
+ 
+
+hold off;
