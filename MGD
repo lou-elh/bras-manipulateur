@@ -1,0 +1,26 @@
+clc 
+clear all 
+t1=deg2rad(input('Entrez teta 1 : '))
+t2=deg2rad(input('Entrez teta 2 : '))
+t3=deg2rad(input('Entrez teta 3 : '))
+
+%% Données
+d1=11,d2=0,d3=0;
+alf1=pi/2,alf2=0,alf3=0;
+a1=0,a2=11,a3=16;
+
+%% Matrices de passage 
+ T01=[cos(t1),-sin(t1)*cos(alf1),sin(t1)*sin(alf1),a1*cos(t1);sin(t1),cos(t1)*cos(alf1),-cos(t1)*sin(alf1),a1*sin(t1);0,sin(alf1),cos(alf1),d1;0,0,0,1] 
+ T12=[cos(t2),-sin(t2)*cos(alf2),sin(t2)*sin(alf2),a2*cos(t2);sin(t2),cos(t2)*cos(alf2),-cos(t2)*sin(alf2),a2*sin(t2);0,sin(alf2),cos(alf2),d2;0,0,0,1]
+ T23=[cos(t3),-sin(t3)*cos(alf3),sin(t3)*sin(alf3),a3*cos(t3);sin(t3),cos(t3)*cos(alf3),-cos(t3)*sin(alf3),a3*sin(t3);0,sin(alf3),cos(alf3),d3;0,0,0,1] 
+
+%% Calcul du model geometrique direct : 
+%% matrice de passage globale 
+
+MGD = (T01*T12*T23)
+
+%donner le positionnement 
+P=MGD(:,4)
+x=P(1,:)
+y=P(2,:)
+z=P(3,:)
